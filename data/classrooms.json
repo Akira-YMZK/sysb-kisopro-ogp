@@ -1,4 +1,6 @@
 [
-    { "id": "room1", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": 217 },
-    { "id": "room2", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": 218 }
+    { "id": "room1", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": 217, "room_name": "演習室3" },
+    { "id": "room2", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": 221, "room_name": "31号講義室" },
+    { "id": "room5", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": 224, "room_name": "32号講義室" },
+    { "id": "room6", "building_name": "工学部3号館", "floor_number": 3,"address": "", "room_number": null, "room_name": "ラウンジ" }
   ]
