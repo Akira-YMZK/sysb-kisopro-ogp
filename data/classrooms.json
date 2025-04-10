@@ -17,7 +17,7 @@
     { "id": "room15", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": 413, "room_name": "中会議室" },
     { "id": "room16", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": 415, "room_name": "小会議室" },
     { "id": "room17", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": 422, "room_name": "セミナー室2" },
-    { "id": "room18", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number":  423, "room_name": "会議室" }
+    { "id": "room18", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number":  423, "room_name": "会議室" },
     { "id": "room19", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": 424, "room_name": "会議室" },
     { "id": "room20", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": 432, "room_name": "演習室7" },
     { "id": "room21", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": null, "room_name": "ラウンジ" },
