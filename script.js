@@ -20,7 +20,7 @@ const classroomTemplate = document.getElementById('classroomTemplate');
 // Fetch classroom data
 async function fetchClassrooms() {
   try {
-    const response = await fetch('/data/classrooms.json');
+    const response = await fetch('./data/classrooms.json');
     if (!response.ok) {
       throw new Error('Failed to fetch classroom data');
     }
