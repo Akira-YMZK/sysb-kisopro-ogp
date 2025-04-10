@@ -1,0 +1,4 @@
+[
+    { "id": "room1", "name": "A棟101", "location": "1階", "capacity": 30 },
+    { "id": "room2", "name": "B棟202", "location": "2階", "capacity": 25 }
+  ]
