@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="https://glitch.com/favicon.ico" />
 
-    <title>Hello world,REN!</title>
+    <title>教室検索システム</title>
 
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css" />
@@ -16,15 +16,50 @@
   <body>
     <!-- this is the start of content -->
     <h1>
-      Hello World!
+      教室検索システム
     </h1>
-    <p>
-      This starter gives you everything you need to start working on a new
-      website, and nothing more. If you're looking for something a little more
-      opinionated, try remixing
-      <a href="https://glitch.com/edit/#!/remix/glitch-hello-website"
-        >~glitch-hello-website</a
-      >.
-    </p>
+    
+    <div class="search-container">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="キーワードで検索...">
+        <button id="searchButton">検索</button>
+      </div>
+      
+      <div class="filter-options">
+        <div class="filter-group">
+          <label for="buildingFilter">建物:</label>
+          <select id="buildingFilter">
+            <option value="">すべて</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="floorFilter">階:</label>
+          <select id="floorFilter">
+            <option value="">すべて</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="results-container">
+      <h2>検索結果</h2>
+      <div id="searchResults" class="results-grid"></div>
+    </div>
+    
+    <div id="noResults" style="display: none;">
+      <p>該当する教室が見つかりませんでした。</p>
+    </div>
+    
+    <template id="classroomTemplate">
+      <div class="classroom-card">
+        <h3 class="room-name"></h3>
+        <div class="room-details">
+          <p><strong>建物:</strong> <span class="building-name"></span></p>
+          <p><strong>階:</strong> <span class="floor-number"></span></p>
+          <p><strong>部屋番号:</strong> <span class="room-number"></span></p>
+        </div>
+      </div>
+    </template>
   </body>
 </html>
