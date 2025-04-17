@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+
 const corsOptions = {
   origin: '*', // Allow any origin for testing
   credentials: true,
@@ -12,6 +15,20 @@ const PORT = 5001; // Use a different port for testing
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// データファイルのパス
+const classroomsFilePath = path.join(__dirname, 'data', 'classrooms.json');
+
+// 教室データを読み込む関数
+const getClassrooms = () => {
+  try {
+    const data = fs.readFileSync(classroomsFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading classrooms data:', error);
+    return [];
+  }
+};
 
 // Log all requests
 app.use((req, res, next) => {
@@ -30,43 +47,89 @@ app.get('/api/test', (req, res) => {
   res.json({ success: true, message: 'Test endpoint working' });
 });
 
-// Simple buildings endpoint
+// 利用可能な建物リストを取得
 app.get('/api/buildings', (req, res) => {
-  res.json(["工学部3号館"]);
+  const classrooms = getClassrooms();
+  const buildingSet = new Set();
+  
+  classrooms.forEach(classroom => {
+    if (classroom.building_name) {
+      buildingSet.add(classroom.building_name);
+    }
+  });
+  
+  const buildings = Array.from(buildingSet).sort();
+  res.json(buildings);
 });
 
-// Simple floors endpoint
+// 利用可能な階リストを取得
 app.get('/api/floors', (req, res) => {
-  res.json([1, 2, 3, 4]);
+  const classrooms = getClassrooms();
+  const floorSet = new Set();
+  
+  classrooms.forEach(classroom => {
+    if (classroom.floor_number !== undefined && classroom.floor_number !== null) {
+      floorSet.add(classroom.floor_number);
+    }
+  });
+  
+  const floors = Array.from(floorSet).sort((a, b) => a - b);
+  res.json(floors);
 });
 
-// Simple classrooms endpoint
+// すべての教室を取得
 app.get('/api/classrooms', (req, res) => {
-  res.json([{ id: "test", building_name: "工学部3号館", floor_number: 2, room_number: 101, room_name: "Test Room" }]);
+  const classrooms = getClassrooms();
+  console.log(`Returning all classrooms: ${classrooms.length} rooms`);
+  res.json(classrooms);
 });
 
-// Classrooms search endpoint with filtering
+// 検索条件に基づいて教室をフィルタリング
 app.get('/api/classrooms/search', (req, res) => {
   console.log('Search query:', req.query);
-  const { building, floor } = req.query;
+  const { building, floor, keyword } = req.query;
   
-  // Start with all classrooms
-  let classrooms = [
-    { id: "room1", building_name: "工学部3号館", floor_number: 2, room_number: 217, room_name: "演習室3" },
-    { id: "room2", building_name: "工学部3号館", floor_number: 2, room_number: 221, room_name: "31号講義室" },
-    { id: "room3", building_name: "工学部3号館", floor_number: 3, room_number: 309, room_name: "演習室4" },
-    { id: "room4", building_name: "工学部3号館", floor_number: 3, room_number: 317, room_name: "演習室5" },
-    { id: "room5", building_name: "工学部3号館", floor_number: 4, room_number: 411, room_name: "演習室6" }
-  ];
+  // すべての教室データを取得
+  let classrooms = getClassrooms();
   
-  // Apply filters
+  // 建物でフィルタリング
   if (building) {
+    console.log(`Filtering by building: ${building}`);
     classrooms = classrooms.filter(room => room.building_name === building);
+    console.log(`After building filter: ${classrooms.length} rooms`);
   }
   
-  if (floor) {
+  // 階でフィルタリング (floor パラメータが指定され、空でない場合のみ)
+  if (floor && floor.trim() !== '') {
     const floorNum = parseInt(floor);
-    classrooms = classrooms.filter(room => room.floor_number === floorNum);
+    console.log(`Filtering by floor: ${floorNum}, Type: ${typeof floorNum}`);
+    
+    classrooms = classrooms.filter(room => {
+      // Ensure both values are the same type for comparison
+      // Convert room.floor_number to a number if it's not already
+      const roomFloor = typeof room.floor_number === 'number' ? 
+                        room.floor_number : 
+                        parseInt(room.floor_number);
+      
+      console.log(`Room: ${room.room_name}, Floor: ${roomFloor} (${typeof roomFloor}) === ${floorNum} (${typeof floorNum}): ${roomFloor === floorNum}`);
+      
+      return roomFloor === floorNum;
+    });
+    console.log(`After floor filter: ${classrooms.length} rooms`);
+  }
+  
+  // キーワードでフィルタリング
+  if (keyword) {
+    const searchTerm = keyword.toLowerCase();
+    classrooms = classrooms.filter(room => {
+      const roomName = (room.room_name || '').toLowerCase();
+      const buildingName = (room.building_name || '').toLowerCase();
+      const roomNumber = room.room_number ? room.room_number.toString() : '';
+      
+      return roomName.includes(searchTerm) || 
+             buildingName.includes(searchTerm) || 
+             roomNumber.includes(searchTerm);
+    });
   }
   
   res.json(classrooms);
