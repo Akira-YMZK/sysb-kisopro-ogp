@@ -1,0 +1,27 @@
+{
+  "name": "sysb-kisopro-ogp",
+  "version": "1.0.0",
+  "description": "## 概要 このプロジェクトは、大学の教室情報を検索できるウェブアプリケーションです。建物、階数、キーワードなどで教室を検索することができます。",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akira-YMZK/sysb-kisopro-ogp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Akira-YMZK/sysb-kisopro-ogp/issues"
+  },
+  "homepage": "https://github.com/Akira-YMZK/sysb-kisopro-ogp#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
