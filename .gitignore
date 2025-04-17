@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production build files
+/build
+/dist
+/.next/
+/out/
+
+# Misc
+.DS_Store
+.vscode/
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local development
+# .env - Not excluded as per requirements
+# .env.local - Not excluded as per requirements
+# .env.development.local
+# .env.test.local
+# .env.production.local
+
+# Cache
+.vercel
+.turbo
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
