@@ -18,7 +18,7 @@ const ClassroomCard: React.FC<ClassroomCardProps> = ({ classroom }) => {
         </p>
         <p>
           <span className="font-semibold">階:</span>{' '}
-          {classroom.floor_number !== null ? classroom.floor_number : '---'}
+          {classroom.floor_number !== null ? `${classroom.floor_number}階` : '---'}
         </p>
         <p>
           <span className="font-semibold">部屋番号:</span>{' '}

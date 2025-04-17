@@ -114,7 +114,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               <option value="">すべて</option>
               {floors.map((floor) => (
                 <option key={floor} value={floor.toString()}>
-                  {floor}
+                  {floor}階
                 </option>
               ))}
             </select>
