@@ -1,10 +1,9 @@
 /**
  * 基本的なAPI取得関数
  */
-export async function fetchApi(endpoint, options = {}) {
+export async function fetchApi(endpoint: string, options = {}) {
   // Use relative path for API calls to leverage Next.js rewrites
   const url = `/api${endpoint}`;
-  
   const response = await fetch(url, options);
   
   if (!response.ok) {
@@ -24,7 +23,7 @@ export async function fetchAllClassrooms() {
 /**
  * 検索条件に基づいて教室をフィルタリング
  */
-export async function searchClassrooms(params = {}) {
+export async function searchClassrooms(params: any = {}) {
   const { keyword, building, floor } = params;
   let queryParams = new URLSearchParams();
   
@@ -57,6 +56,6 @@ export async function fetchFloors() {
 /**
  * 特定の教室のスケジュールを取得
  */
-export async function fetchRoomSchedules(roomId) {
+export async function fetchRoomSchedules(roomId: string) {
   return fetchApi(`/schedules/${roomId}`);
 }
