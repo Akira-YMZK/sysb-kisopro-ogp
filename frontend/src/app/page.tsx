@@ -173,7 +173,7 @@ export default function Home() {
       >
         教室を検索する
       </Link>
-      
+       
       {/* フッター */}
       <footer className="mt-20 text-center text-gray-500 dark:text-gray-400 text-sm">
         <p>&copy; {new Date().getFullYear()} 教室検索システム</p>
