@@ -58,9 +58,14 @@ export default function ClassroomDetailPage() {
         <div className="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
           <h1 className="text-2xl font-bold text-red-600 mb-4">エラー</h1>
           <p className="text-gray-700">{error || '教室情報が見つかりませんでした'}</p>
-          <Link href="/search-classrooms" className="mt-6 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-            教室検索に戻る
-          </Link>
+          <div className="mt-6 flex justify-center gap-4">
+            <Link href="/search-classrooms" className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+              教室検索に戻る
+            </Link>
+            <Link href="/" className="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+              トップページへ戻る
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -68,12 +73,18 @@ export default function ClassroomDetailPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
+      <div className="mb-6 flex flex-col gap-2">
         <Link href="/search-classrooms" className="text-blue-600 hover:underline flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
             <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
           </svg>
-          検索結果へ戻る
+          教室検索システムへ戻る
+        </Link>
+        <Link href="/" className="text-blue-600 hover:underline flex items-center gap-2 ml-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-house" viewBox="0 0 16 16">
+            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+          </svg>
+          トップページへ戻る
         </Link>
       </div>
 
