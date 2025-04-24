@@ -23,3 +23,8 @@ export interface SearchParams {
   building?: string;
   floor?: string;
 }
+
+// ロケーションデータの型
+export interface LocationData extends Classroom {
+  location: string;
+}

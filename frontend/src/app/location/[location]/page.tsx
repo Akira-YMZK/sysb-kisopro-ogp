@@ -3,35 +3,35 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Classroom } from '../../../types';
+import { Classroom, LocationData } from '../../../types';
 
-export default function ClassroomDetailPage() {
+export default function LocationDetailPage() {
   const params = useParams();
-  const roomName = decodeURIComponent(params.room_name as string);
-  const [classroom, setClassroom] = useState<Classroom | null>(null);
+  const location = decodeURIComponent(params.location as string);
+  const [classroom, setClassroom] = useState<LocationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchClassroomData = async () => {
+    const fetchLocationData = async () => {
       try {
-        // 教室データの取得
-        const response = await fetch('/api/classrooms');
+        // ロケーションデータの取得
+        const response = await fetch('/api/locations');
         if (!response.ok) {
-          throw new Error('教室データの取得に失敗しました');
+          throw new Error('ロケーションデータの取得に失敗しました');
         }
         
-        const classrooms = await response.json();
+        const locations = await response.json();
         
-        // URLのroom_nameパラメータに基づいて教室を検索
-        const found = classrooms.find((c: Classroom) => 
-          c.room_name === roomName
+        // URLのlocationパラメータに基づいて教室を検索
+        const found = locations.find((loc: LocationData) => 
+          loc.location === location
         );
         
         if (found) {
           setClassroom(found);
         } else {
-          setError('指定された教室は見つかりませんでした');
+          setError('指定されたロケーションは見つかりませんでした');
         }
       } catch (err) {
         setError('データの読み込み中にエラーが発生しました');
@@ -41,8 +41,8 @@ export default function ClassroomDetailPage() {
       }
     };
 
-    fetchClassroomData();
-  }, [roomName]);
+    fetchLocationData();
+  }, [location]);
 
   if (loading) {
     return (
@@ -57,7 +57,7 @@ export default function ClassroomDetailPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="bg-red-50 border border-red-200 p-6 rounded-lg text-center">
           <h1 className="text-2xl font-bold text-red-600 mb-4">エラー</h1>
-          <p className="text-gray-700">{error || '教室情報が見つかりませんでした'}</p>
+          <p className="text-gray-700">{error || 'ロケーション情報が見つかりませんでした'}</p>
           <div className="mt-6 flex justify-center gap-4">
             <Link href="/search-classrooms" className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
               教室検索に戻る
@@ -91,7 +91,7 @@ export default function ClassroomDetailPage() {
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
         <div className="p-6">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white pb-3 border-b border-gray-200 dark:border-gray-700">
-            {classroom.room_name}
+            {classroom.room_name || 'ロケーション詳細'}
           </h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -114,6 +114,12 @@ export default function ClassroomDetailPage() {
                     {classroom.room_number !== null ? classroom.room_number : '---'}
                   </p>
                 </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">ロケーション識別子</p>
+                  <p className="text-lg font-semibold text-gray-800 dark:text-white">
+                    {location}
+                  </p>
+                </div>
                 {classroom.address && (
                   <div>
                     <p className="text-sm text-gray-500 dark:text-gray-400">住所</p>
@@ -126,7 +132,7 @@ export default function ClassroomDetailPage() {
             <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
               <h2 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-300">詳細情報</h2>
               <p className="text-gray-600 dark:text-gray-400">
-                この教室の詳細情報はまだ登録されていません。
+                このロケーションの詳細情報はまだ登録されていません。
               </p>
             </div>
           </div>
