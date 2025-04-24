@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Classroom } from '../types';
+import { Classroom, LocationData } from '../types';
 import { findRoute, RouteSearchResult } from '../lib/actions/search/search';
 
 export default function Home() {
@@ -11,10 +11,12 @@ export default function Home() {
   // state管理
   // =========================================
 
-  // 教室データの状態
-  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-  // 選択された教室名
-  const [selectedRoom, setSelectedRoom] = useState('');
+  // ロケーションデータの状態
+  const [locations, setLocations] = useState<LocationData[]>([]);
+  // 選択されたロケーション
+  const [selectedLocation, setSelectedLocation] = useState('');
+  // 表示用の教室名
+  const [selectedRoomName, setSelectedRoomName] = useState('');
   // ユーザーが入力した出発地点
   const [startPoint, setStartPoint] = useState('');
   // データ読み込み中状態
@@ -27,39 +29,57 @@ export default function Home() {
   const router = useRouter();
 
   // =========================================
-  // 教室データの取得（初期ロード時）
+  // ロケーションデータの取得（初期ロード時）
   // =========================================
   useEffect(() => {
-    const fetchClassrooms = async () => {
+    const fetchLocations = async () => {
       try {
-        // APIから教室データを取得
-        const response = await fetch('/api/classrooms');
+        // APIからロケーションデータを取得
+        const response = await fetch('/api/locations');
         if (!response.ok) {
-          throw new Error('教室データの取得に失敗しました');
+          throw new Error('ロケーションデータの取得に失敗しました');
         }
         const data = await response.json();
-        setClassrooms(data);
+        
+        // room_nameがnullでなく、かつroom_numberもnullでないデータのみ抽出
+        const filteredData = data.filter((loc: LocationData) => 
+          loc.room_name !== null && loc.room_number !== null
+        );
+        setLocations(filteredData);
         
         // 初期値を設定
-        if (data.length > 0) {
-          setSelectedRoom(data[0].room_name);
+        if (filteredData.length > 0) {
+          setSelectedLocation(filteredData[0].location);
+          setSelectedRoomName(filteredData[0].room_name);
         }
       } catch (error) {
-        console.error('Error fetching classrooms:', error);
+        console.error('Error fetching locations:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchClassrooms();
+    fetchLocations();
   }, []);
+
+  // ロケーション選択時の処理
+  const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const location = e.target.value;
+    setSelectedLocation(location);
+    
+    // 選択されたロケーションに対応する教室名も更新
+    const selectedLoc = locations.find(loc => loc.location === location);
+    if (selectedLoc) {
+      setSelectedRoomName(selectedLoc.room_name);
+    }
+  };
 
   // =========================================
   // 経路検索処理
   // =========================================
   const handleRouteSearch = async () => {
     // 入力検証
-    if (!startPoint.trim() || !selectedRoom) {
+    if (!startPoint.trim() || !selectedLocation) {
       // 入力が不完全な場合は処理を中断
       return;
     }
@@ -69,17 +89,14 @@ export default function Home() {
       setSearching(true);
       
       // Server Actionを呼び出して経路検索を実行
-      // 注: Server Actionはサーバーサイドで実行される関数
-      const result = await findRoute(startPoint, selectedRoom);
+      const result = await findRoute(startPoint, selectedRoomName);
       
       // 検索結果を状態に保存
       setSearchResult(result);
       
-      // 検索が成功した場合、教室詳細ページへ遷移
+      // 検索が成功した場合、ロケーション詳細ページへ遷移
       if (result.success) {
-        // この実装では単純に教室詳細ページへ遷移
-        // 将来的には検索結果を含むURLパラメータを渡すことも可能
-        router.push(`/classrooms/${encodeURIComponent(selectedRoom)}`);
+        router.push(`/location/${encodeURIComponent(selectedLocation)}`);
       }
       
     } catch (error) {
@@ -132,17 +149,17 @@ export default function Home() {
           </label>
           <select
             id="destination"
-            value={selectedRoom}
-            onChange={(e) => setSelectedRoom(e.target.value)}
+            value={selectedLocation}
+            onChange={handleLocationChange}
             className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             disabled={loading}
           >
             {loading ? (
               <option>読み込み中...</option>
             ) : (
-              classrooms.map((classroom) => (
-                <option key={classroom.id} value={classroom.room_name}>
-                  {classroom.room_name} ({classroom.building_name} {classroom.floor_number}階)
+              locations.map((loc) => (
+                <option key={loc.id} value={loc.location}>
+                  {loc.room_name} ({loc.building_name} {loc.floor_number}階)
                 </option>
               ))
             )}
@@ -152,7 +169,7 @@ export default function Home() {
         {/* 経路検索ボタン */}
         <button
           onClick={handleRouteSearch}
-          disabled={!selectedRoom || !startPoint.trim() || loading || searching}
+          disabled={!selectedLocation || !startPoint.trim() || loading || searching}
           className="w-full mt-4 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {searching ? '検索中...' : '経路検索'}

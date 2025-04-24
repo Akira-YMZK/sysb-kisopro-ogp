@@ -1,7 +1,7 @@
 'use server';
 
-import { Classroom } from '../../../types';
-import classroomsData from '../../../lib/data/classrooms.json';
+import { Classroom, LocationData } from '../../../types';
+import locationsData from '../../../lib/data/location.json';
 
 // 検索結果の型定義
 export type RouteSearchResult = {
@@ -14,7 +14,7 @@ export type RouteSearchResult = {
     // 出発地点
     startPoint: string;
     // 目的地の教室情報
-    destination: Classroom;
+    destination: LocationData;
     // 経路ステップ（例: "1階から2階へ上がる", "右に曲がる"など）
     steps: string[];
     // 推定所要時間（分）
@@ -40,11 +40,11 @@ export async function findRoute(startPoint: string, roomName: string): Promise<R
     }
 
     // 目的地の教室情報を取得
-    const targetClassroom = (classroomsData as Classroom[]).find(
-      (classroom) => classroom.room_name === roomName
+    const targetLocation = (locationsData as LocationData[]).find(
+      (location) => location.room_name === roomName
     );
 
-    if (!targetClassroom) {
+    if (!targetLocation) {
       return {
         success: false,
         error: '指定された教室が見つかりませんでした'
@@ -57,13 +57,13 @@ export async function findRoute(startPoint: string, roomName: string): Promise<R
       success: true,
       route: {
         startPoint,
-        destination: targetClassroom,
+        destination: targetLocation,
         steps: [
           `${startPoint}から出発`,
-          `${targetClassroom.building_name}へ向かう`,
-          `${targetClassroom.building_name}に到着`,
-          `エレベーターで${targetClassroom.floor_number}階へ上がる`,
-          `${targetClassroom.room_name}に到着`
+          `${targetLocation.building_name}へ向かう`,
+          `${targetLocation.building_name}に到着`,
+          `エレベーターで${targetLocation.floor_number}階へ上がる`,
+          `${targetLocation.room_name}に到着`
         ],
         estimatedTime: 5
       }
