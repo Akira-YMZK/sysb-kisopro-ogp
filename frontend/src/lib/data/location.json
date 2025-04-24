@@ -22,5 +22,16 @@
     { "id": "room21", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": null, "room_name": "ラウンジ", "location":"4thFloorRounge2" },
     { "id": "room22", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": 438, "room_name": "セミナー室3", "location":"438" },
     { "id": "room23", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number": 439, "room_name": "34講義室", "location":"439" },
-    { "id": "room24", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number":  440, "room_name": "35講義室", "location":"440" }
+    { "id": "room24", "building_name": "工学部3号館", "floor_number": 4,"address": "", "room_number":  440, "room_name": "35講義室", "location":"440" },
+    { "id": "lc1", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "正面玄関", "location":"2ndFloorEntrance" },
+    { "id": "lc2", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "曲がり角", "location":"2ndFloorSE" },
+    { "id": "lc3", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "曲がり角", "location":"2ndFloorE" },
+    { "id": "lc4", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "曲がり角", "location":"2ndFloorN" },
+    { "id": "lc5", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "曲がり角", "location":"2ndFloorNW" },
+    { "id": "lc6", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "曲がり角", "location":"2ndFloorSW" },
+    { "id": "lc7", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "連絡通路", "location":"Building3to2" },
+    { "id": "lc8", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "交差点", "location":"317N" },
+    { "id": "lc9", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "交差点", "location":"317W" },
+    { "id": "lc10", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "階段", "location":"2ndFloorSEstair" },
+    { "id": "lc11", "building_name": "工学部3号館", "floor_number": 2,"address": "", "room_number": null, "room_name": "階段", "location":"2ndFloorNWstair" }
 ]
