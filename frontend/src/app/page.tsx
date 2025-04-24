@@ -13,12 +13,18 @@ export default function Home() {
 
   // ロケーションデータの状態
   const [locations, setLocations] = useState<LocationData[]>([]);
-  // 選択されたロケーション
-  const [selectedLocation, setSelectedLocation] = useState('');
-  // 表示用の教室名
-  const [selectedRoomName, setSelectedRoomName] = useState('');
-  // ユーザーが入力した出発地点
-  const [startPoint, setStartPoint] = useState('');
+  // 選択された出発地点のロケーション
+  const [selectedStartLocation, setSelectedStartLocation] = useState('');
+  // 出発地点の表示用名称
+  const [selectedStartRoomName, setSelectedStartRoomName] = useState('');
+  // 選択された目的地のロケーション
+  const [selectedDestLocation, setSelectedDestLocation] = useState('');
+  // 目的地の表示用名称
+  const [selectedDestRoomName, setSelectedDestRoomName] = useState('');
+  // 自由入力の出発地点（オプション）
+  const [customStartPoint, setCustomStartPoint] = useState('');
+  // カスタム入力を使用するかのフラグ
+  const [useCustomStartPoint, setUseCustomStartPoint] = useState(false);
   // データ読み込み中状態
   const [loading, setLoading] = useState(true);
   // 経路検索結果の状態
@@ -49,8 +55,17 @@ export default function Home() {
         
         // 初期値を設定
         if (filteredData.length > 0) {
-          setSelectedLocation(filteredData[0].location);
-          setSelectedRoomName(filteredData[0].room_name);
+          setSelectedDestLocation(filteredData[0].location);
+          setSelectedDestRoomName(filteredData[0].room_name);
+          
+          // 出発地点の初期値も設定
+          if (filteredData.length > 1) {
+            setSelectedStartLocation(filteredData[1].location);
+            setSelectedStartRoomName(filteredData[1].room_name);
+          } else {
+            setSelectedStartLocation(filteredData[0].location);
+            setSelectedStartRoomName(filteredData[0].room_name);
+          }
         }
       } catch (error) {
         console.error('Error fetching locations:', error);
@@ -62,15 +77,37 @@ export default function Home() {
     fetchLocations();
   }, []);
 
-  // ロケーション選択時の処理
-  const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  // 出発地点ロケーション選択時の処理
+  const handleStartLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const location = e.target.value;
-    setSelectedLocation(location);
+    setSelectedStartLocation(location);
     
     // 選択されたロケーションに対応する教室名も更新
     const selectedLoc = locations.find(loc => loc.location === location);
     if (selectedLoc) {
-      setSelectedRoomName(selectedLoc.room_name);
+      setSelectedStartRoomName(selectedLoc.room_name);
+    }
+  };
+
+  // 目的地ロケーション選択時の処理
+  const handleDestLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const location = e.target.value;
+    setSelectedDestLocation(location);
+    
+    // 選択されたロケーションに対応する教室名も更新
+    const selectedLoc = locations.find(loc => loc.location === location);
+    if (selectedLoc) {
+      setSelectedDestRoomName(selectedLoc.room_name);
+    }
+  };
+
+  // 入力方法の切り替え処理
+  const toggleStartPointInputMethod = () => {
+    setUseCustomStartPoint(!useCustomStartPoint);
+    
+    // カスタム入力に切り替えた場合は入力内容をクリア
+    if (!useCustomStartPoint) {
+      setCustomStartPoint('');
     }
   };
 
@@ -78,8 +115,11 @@ export default function Home() {
   // 経路検索処理
   // =========================================
   const handleRouteSearch = async () => {
+    // 出発地点の取得
+    const startPoint = useCustomStartPoint ? customStartPoint : selectedStartRoomName;
+    
     // 入力検証
-    if (!startPoint.trim() || !selectedLocation) {
+    if ((!startPoint || startPoint.trim() === '') || !selectedDestLocation) {
       // 入力が不完全な場合は処理を中断
       return;
     }
@@ -89,14 +129,14 @@ export default function Home() {
       setSearching(true);
       
       // Server Actionを呼び出して経路検索を実行
-      const result = await findRoute(startPoint, selectedRoomName);
+      const result = await findRoute(startPoint, selectedDestRoomName);
       
       // 検索結果を状態に保存
       setSearchResult(result);
       
       // 検索が成功した場合、ロケーション詳細ページへ遷移
       if (result.success) {
-        router.push(`/location/${encodeURIComponent(selectedLocation)}`);
+        router.push(`/location/${encodeURIComponent(selectedDestLocation)}`);
       }
       
     } catch (error) {
@@ -126,20 +166,53 @@ export default function Home() {
       </p>
       
       {/* 経路検索フォーム */}
-      <div className="w-full max-w-md mb-8 space-y-4">
-        {/* 出発地点入力 */}
+      <div className="w-full max-w-md mb-8 space-y-6">
+        {/* 出発地点入力切り替えボタン */}
+        <div className="flex justify-end">
+          <button
+            onClick={toggleStartPointInputMethod}
+            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+          >
+            {useCustomStartPoint ? '教室から選択する' : '自由に入力する'}
+          </button>
+        </div>
+        
+        {/* 出発地点入力（切り替え可能） */}
         <div className="flex flex-col space-y-2">
           <label htmlFor="startPoint" className="text-gray-700 dark:text-gray-300 font-medium">
             出発地点
           </label>
-          <input
-            id="startPoint"
-            type="text"
-            value={startPoint}
-            onChange={(e) => setStartPoint(e.target.value)}
-            placeholder="現在地または出発点を入力"
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-          />
+          
+          {/* 自由入力モード */}
+          {useCustomStartPoint ? (
+            <input
+              id="customStartPoint"
+              type="text"
+              value={customStartPoint}
+              onChange={(e) => setCustomStartPoint(e.target.value)}
+              placeholder="現在地または出発点を入力"
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          ) : (
+            /* 教室選択モード */
+            <select
+              id="startLocation"
+              value={selectedStartLocation}
+              onChange={handleStartLocationChange}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+              disabled={loading}
+            >
+              {loading ? (
+                <option>読み込み中...</option>
+              ) : (
+                locations.map((loc) => (
+                  <option key={`start-${loc.id}`} value={loc.location}>
+                    {loc.room_name} ({loc.building_name} {loc.floor_number}階)
+                  </option>
+                ))
+              )}
+            </select>
+          )}
         </div>
         
         {/* 目的地選択 */}
@@ -149,8 +222,8 @@ export default function Home() {
           </label>
           <select
             id="destination"
-            value={selectedLocation}
-            onChange={handleLocationChange}
+            value={selectedDestLocation}
+            onChange={handleDestLocationChange}
             className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
             disabled={loading}
           >
@@ -158,7 +231,7 @@ export default function Home() {
               <option>読み込み中...</option>
             ) : (
               locations.map((loc) => (
-                <option key={loc.id} value={loc.location}>
+                <option key={`dest-${loc.id}`} value={loc.location}>
                   {loc.room_name} ({loc.building_name} {loc.floor_number}階)
                 </option>
               ))
@@ -169,8 +242,13 @@ export default function Home() {
         {/* 経路検索ボタン */}
         <button
           onClick={handleRouteSearch}
-          disabled={!selectedLocation || !startPoint.trim() || loading || searching}
-          className="w-full mt-4 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+          disabled={
+            (useCustomStartPoint ? !customStartPoint.trim() : !selectedStartLocation) || 
+            !selectedDestLocation || 
+            loading || 
+            searching
+          }
+          className="w-full mt-6 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {searching ? '検索中...' : '経路検索'}
         </button>
