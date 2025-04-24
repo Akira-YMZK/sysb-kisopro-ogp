@@ -11,8 +11,10 @@ export default function Home() {
   // state管理
   // =========================================
 
-  // ロケーションデータの状態
-  const [locations, setLocations] = useState<LocationData[]>([]);
+  // ロケーションデータの状態（フィルタリング済み - 目的地用）
+  const [filteredLocations, setFilteredLocations] = useState<LocationData[]>([]);
+  // 全てのロケーションデータ（出発地用）
+  const [allLocations, setAllLocations] = useState<LocationData[]>([]);
   // 選択された出発地点のロケーション
   const [selectedStartLocation, setSelectedStartLocation] = useState('');
   // 出発地点の表示用名称
@@ -47,25 +49,27 @@ export default function Home() {
         }
         const data = await response.json();
         
-        // room_nameがnullでなく、かつroom_numberもnullでないデータのみ抽出
-        const filteredData = data.filter((loc: LocationData) => 
+        // 全てのロケーションデータを保存（出発地点用）
+        setAllLocations(data);
+        
+        // 目的地用にはroom_nameとroom_numberがnullでないデータのみ抽出
+        const filtered = data.filter((loc: LocationData) => 
           loc.room_name !== null && loc.room_number !== null
         );
-        setLocations(filteredData);
+        setFilteredLocations(filtered);
         
         // 初期値を設定
-        if (filteredData.length > 0) {
-          setSelectedDestLocation(filteredData[0].location);
-          setSelectedDestRoomName(filteredData[0].room_name);
-          
-          // 出発地点の初期値も設定
-          if (filteredData.length > 1) {
-            setSelectedStartLocation(filteredData[1].location);
-            setSelectedStartRoomName(filteredData[1].room_name);
-          } else {
-            setSelectedStartLocation(filteredData[0].location);
-            setSelectedStartRoomName(filteredData[0].room_name);
-          }
+        if (filtered.length > 0) {
+          // 目的地の初期値
+          setSelectedDestLocation(filtered[0].location);
+          setSelectedDestRoomName(filtered[0].room_name);
+        }
+        
+        // 出発地点の初期値（全データから）
+        if (data.length > 0) {
+          setSelectedStartLocation(data[0].location);
+          // 表示用の名前（room_nameがnullの場合は「階数+ロケーション」を表示）
+          setSelectedStartRoomName(data[0].room_name || `${data[0].floor_number}階 ${data[0].location}`);
         }
       } catch (error) {
         console.error('Error fetching locations:', error);
@@ -83,9 +87,12 @@ export default function Home() {
     setSelectedStartLocation(location);
     
     // 選択されたロケーションに対応する教室名も更新
-    const selectedLoc = locations.find(loc => loc.location === location);
+    const selectedLoc = allLocations.find(loc => loc.location === location);
     if (selectedLoc) {
-      setSelectedStartRoomName(selectedLoc.room_name);
+      // room_nameがnullの場合は「階数+ロケーション」を表示
+      setSelectedStartRoomName(
+        selectedLoc.room_name || `${selectedLoc.floor_number}階 ${selectedLoc.location}`
+      );
     }
   };
 
@@ -95,7 +102,7 @@ export default function Home() {
     setSelectedDestLocation(location);
     
     // 選択されたロケーションに対応する教室名も更新
-    const selectedLoc = locations.find(loc => loc.location === location);
+    const selectedLoc = filteredLocations.find(loc => loc.location === location);
     if (selectedLoc) {
       setSelectedDestRoomName(selectedLoc.room_name);
     }
@@ -152,6 +159,15 @@ export default function Home() {
     }
   };
 
+  // ロケーション表示用の関数（room_nameがnullの場合の表示を処理）
+  const getLocationDisplayName = (loc: LocationData) => {
+    if (loc.room_name) {
+      return `${loc.room_name} (${loc.building_name} ${loc.floor_number}階)`;
+    } else {
+      return `${loc.building_name} ${loc.floor_number}階 ${loc.location}`;
+    }
+  };
+
   // =========================================
   // レンダリング
   // =========================================
@@ -205,9 +221,9 @@ export default function Home() {
               {loading ? (
                 <option>読み込み中...</option>
               ) : (
-                locations.map((loc) => (
+                allLocations.map((loc) => (
                   <option key={`start-${loc.id}`} value={loc.location}>
-                    {loc.room_name} ({loc.building_name} {loc.floor_number}階)
+                    {getLocationDisplayName(loc)}
                   </option>
                 ))
               )}
@@ -230,7 +246,7 @@ export default function Home() {
             {loading ? (
               <option>読み込み中...</option>
             ) : (
-              locations.map((loc) => (
+              filteredLocations.map((loc) => (
                 <option key={`dest-${loc.id}`} value={loc.location}>
                   {loc.room_name} ({loc.building_name} {loc.floor_number}階)
                 </option>
