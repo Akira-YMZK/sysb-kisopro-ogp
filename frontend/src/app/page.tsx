@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Classroom, LocationData } from '../types';
@@ -173,6 +174,22 @@ export default function Home() {
   // =========================================
   return (
     <div className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[80vh]">
+
+      {/* ヘッダー画像セクション */}
+      <div className="w-full relative mb-8">
+        <div className="w-full h-64 md:h-80">
+          <Image 
+            src="/images/IMG_3273.JPG" 
+            alt="3号館画像" 
+            className="w-full h-full object-cover object-top rounded-lg shadow-lg"
+            width={1920}
+            height={400}
+            priority
+          />
+        </div>
+      </div>
+
+
       <h1 className="text-5xl font-bold text-center text-gray-800 dark:text-white mb-6">
         3Dルート検索
       </h1>
