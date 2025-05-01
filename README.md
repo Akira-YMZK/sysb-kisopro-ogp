@@ -1,23 +1,39 @@
-# sysb-kisopro-ogp
-Hello Website (blank)
-This is a basic static HTML starter project you can build on however you like. No need to save. While you develop your site, your changes will happen 🪄 immediately in the preview window. You can upload assets like images or audio in assets to the left. The rest is up to you and your imagination.
+# 教室検索システム
 
-What's in this project?
-← README.md: That's this file, where you can tell people what your cool website does and how you built it.
+## 概要
+このプロジェクトは、大学の教室情報を検索できるウェブアプリケーションです。建物、階数、キーワードなどで教室を検索することができます。
 
-← index.html: This is the main HTML page for your site.
+## セットアップ方法
 
-← style.css: CSS files add styling rules to your content.
+### 1. 必要な環境
+- Python 3 がインストールされていること
 
-← script.js: If you're feeling fancy you can add interactivity to your site with JavaScript.
+### 2. サーバーの起動方法
 
-Glitch
+1. sysb-kisopro-ogp ディレクトリに移動します：
+```bash
+cd /path/to/sysb-kisopro-ogp
+```
 
-You built this with Glitch!
-Glitch is a friendly community where millions of people come together to build web apps and websites.
+2. Python の組み込みサーバーを起動します：
+```bash
+python -m http.server 8000
+```
 
-Need more help? Check out our Help Center for answers to any common questions.
-Ready to make it official? Become a paid Glitch member to boost your app with private sharing, more storage and memory, domains and more.
+3. 以下のメッセージが表示されれば、サーバーが正常に起動しています：
+```
+Serving HTTP on :: port 8000 (http://[::]:8000/) ...
+```
 
-小花見参！
+### 3. アプリケーションへのアクセス方法
 
+ブラウザで以下のURLにアクセスしてください：
+```
+http://localhost:8000/
+```
+
+これで教室検索システムを利用できます。
+
+## 注意点
+- ファイルを直接ブラウザで開くと（file://プロトコル）、JSONデータが読み込めずに動作しません
+- 必ずHTTPサーバー経由でアクセスしてください
