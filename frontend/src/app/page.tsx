@@ -222,7 +222,7 @@ export default function Home() {
                 <option>読み込み中...</option>
               ) : (
                 allLocations.map((loc) => (
-                  <option key={`start-${loc.id}`} value={loc.location}>
+                  <option key={`start-${loc.location}`} value={loc.location}>
                     {getLocationDisplayName(loc)}
                   </option>
                 ))
@@ -247,7 +247,7 @@ export default function Home() {
               <option>読み込み中...</option>
             ) : (
               filteredLocations.map((loc) => (
-                <option key={`dest-${loc.id}`} value={loc.location}>
+                <option key={`dest-${loc.location}`} value={loc.location}>
                   {loc.room_name} ({loc.building_name} {loc.floor_number}階)
                 </option>
               ))
