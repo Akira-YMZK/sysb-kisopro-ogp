@@ -173,42 +173,27 @@ export default function Home() {
   // =========================================
   return (
     <div className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[80vh]">
-      <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-white mb-6">
-        教室検索システム
+      <h1 className="text-5xl font-bold text-center text-gray-800 dark:text-white mb-6">
+        3Dルート検索
       </h1>
-      <p className="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl">
-        建物、階数、キーワードを使って最適な教室を見つけることができます。
-        検索ページで詳細な条件を指定して、必要な教室をすぐに探し出しましょう。
+      <p className="text-xl text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+        現在地、目的地を設定すると道案内を開始します。
+        3D画像上に表示される矢印に従って進んでください。
       </p>
       
-      {/* 経路検索フォーム */}
-      <div className="w-full max-w-md mb-8 space-y-6">
-        {/* 出発地点入力切り替えボタン */}
-        <div className="flex justify-end">
-          <button
-            onClick={toggleStartPointInputMethod}
-            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-          >
-            {useCustomStartPoint ? '教室から選択する' : '自由に入力する'}
-          </button>
-        </div>
-        
-        {/* 出発地点入力（切り替え可能） */}
+      <div className="w-full max-w-md mb-8 space-y-4">
         <div className="flex flex-col space-y-2">
           <label htmlFor="startPoint" className="text-gray-700 dark:text-gray-300 font-medium">
-            出発地点
+            現在地
           </label>
-          
-          {/* 自由入力モード */}
-          {useCustomStartPoint ? (
-            <input
-              id="customStartPoint"
-              type="text"
-              value={customStartPoint}
-              onChange={(e) => setCustomStartPoint(e.target.value)}
-              placeholder="現在地または出発点を入力"
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-            />
+          <input
+            id="startPoint"
+            type="text"
+            value={startPoint}
+            onChange={(e) => setStartPoint(e.target.value)}
+            placeholder="現在地を入力 例:31講義室、217室"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+          />
           ) : (
             /* 教室選択モード */
             <select
@@ -231,7 +216,6 @@ export default function Home() {
           )}
         </div>
         
-        {/* 目的地選択 */}
         <div className="flex flex-col space-y-2">
           <label htmlFor="destination" className="text-gray-700 dark:text-gray-300 font-medium">
             目的地
@@ -246,47 +230,38 @@ export default function Home() {
             {loading ? (
               <option>読み込み中...</option>
             ) : (
-              filteredLocations.map((loc) => (
-                <option key={`dest-${loc.location}`} value={loc.location}>
-                  {loc.room_name} ({loc.building_name} {loc.floor_number}階)
+              classrooms.map((classroom) => (
+                <option key={classroom.id} value={classroom.room_name}>
+                  {classroom.room_name} ({classroom.building_name} {classroom.floor_number}階)
                 </option>
               ))
             )}
           </select>
         </div>
         
-        {/* 経路検索ボタン */}
         <button
           onClick={handleRouteSearch}
-          disabled={
-            (useCustomStartPoint ? !customStartPoint.trim() : !selectedStartLocation) || 
-            !selectedDestLocation || 
-            loading || 
-            searching
-          }
-          className="w-full mt-6 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+          disabled={!selectedRoom || loading}
+          className="w-full mt-8 px-6 py-4 text-lg bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all shadow-lg hover:shadow-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {searching ? '検索中...' : '経路検索'}
+          経路検索
         </button>
-        
-        {/* エラーメッセージ表示 */}
-        {searchResult && !searchResult.success && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600">
-            {searchResult.error || 'エラーが発生しました'}
-          </div>
-        )}
       </div>
       
-      {/* 教室検索ページへのリンク */}
       <Link 
         href="/search-classrooms" 
-        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+        className="group px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center"
       >
+        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
         教室を検索する
+        <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+        </svg>
       </Link>
-       
-      {/* フッター */}
-      <footer className="mt-20 text-center text-gray-500 dark:text-gray-400 text-sm">
+      
+      <footer className="w-full text-center text-gray-500 dark:text-gray-400 text-lg pb-8">
         <p>&copy; {new Date().getFullYear()} 教室検索システム</p>
       </footer>
     </div>
