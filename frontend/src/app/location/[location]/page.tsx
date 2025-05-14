@@ -1,30 +1,32 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-// import { Classroom, LocationData } from '../../../types';
-import { LocationData } from '../../../types';
+import { LocationData, LocationNavigationData, LocationConnection } from '../../../types';
+import styles from './page.module.css';
 
 export default function LocationDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const location = decodeURIComponent(params.location as string);
   const [classroom, setClassroom] = useState<LocationData | null>(null);
+  const [navigationData, setNavigationData] = useState<LocationNavigationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
-    const fetchLocationData = async () => {
+    const fetchData = async () => {
       try {
         // ロケーションデータの取得
-        const response = await fetch('/api/locations');
-        if (!response.ok) {
+        const locResponse = await fetch('/api/locations');
+        if (!locResponse.ok) {
           throw new Error('ロケーションデータの取得に失敗しました');
         }
         
-        const locations = await response.json();
+        const locations = await locResponse.json();
         
         // URLのlocationパラメータに基づいて教室を検索
         const found = locations.find((loc: LocationData) => 
@@ -36,6 +38,21 @@ export default function LocationDetailPage() {
         } else {
           setError('指定されたロケーションは見つかりませんでした');
         }
+
+        // ナビゲーションデータの取得
+        const navResponse = await fetch('/api/location-navigation');
+        if (!navResponse.ok) {
+          throw new Error('ナビゲーションデータの取得に失敗しました');
+        }
+
+        const navData = await navResponse.json();
+        const foundNav = navData.find((nav: LocationNavigationData) => 
+          nav.location === location
+        );
+
+        if (foundNav) {
+          setNavigationData(foundNav);
+        }
       } catch (err) {
         setError('データの読み込み中にエラーが発生しました');
         console.error(err);
@@ -44,8 +61,13 @@ export default function LocationDetailPage() {
       }
     };
 
-    fetchLocationData();
+    fetchData();
   }, [location]);
+
+  // ナビゲーションリンクをクリックした時の処理
+  const handleNavigationClick = (targetLocation: string) => {
+    router.push(`/location/${targetLocation}`);
+  };
 
   if (loading) {
     return (
@@ -103,13 +125,44 @@ export default function LocationDetailPage() {
             <div className="w-full relative">
               <div className="overflow-x-auto pb-4 w-full" style={{ maxWidth: '100%', overflowY: 'hidden' }}>
                 {!imageError ? (
-                  <div className="w-max">
+                  <div className="w-max relative">
                     <img 
                       src={`/location/${location}.jpeg.jpg`}
                       alt={`${classroom.room_name || 'ロケーション'}のパノラマ画像`}
                       style={{ height: '500px', width: 'auto' }}
                       onError={() => setImageError(true)}
                     />
+                    
+                    {/* ナビゲーションリンク */}
+                    {navigationData && navigationData.connections.map((connection, index) => {
+                      // 接続地点±5%の範囲をクリック可能にする
+                      const minPercent = Math.max(0, connection.position_percent - 5);
+                      const maxPercent = Math.min(100, connection.position_percent + 5);
+                      const width = maxPercent - minPercent;
+                      
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => handleNavigationClick(connection.target_location)}
+                          className={styles.navigationLink}
+                          style={{
+                            top: '50%',
+                            left: `${connection.position_percent}%`,
+                            transform: 'translate(-50%, -50%)'
+                          }}
+                        >
+                          <div className={styles.marker}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 16 16">
+                              <path fillRule="evenodd" d="M8 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                              <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                          </div>
+                          <div className={styles.tooltip}>
+                            {connection.target_location} ({connection.distance_meters}m)
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="bg-gray-100 dark:bg-gray-700 p-8 rounded text-center w-full" style={{ height: '500px' }}>
@@ -122,6 +175,24 @@ export default function LocationDetailPage() {
               <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center">
                 ← 左右にスクロールしてパノラマ画像を見る →
               </div>
+              
+              {/* 隣接ロケーションの一覧 */}
+              {navigationData && navigationData.connections.length > 0 && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">接続先</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {navigationData.connections.map((connection, index) => (
+                      <Link
+                        key={index}
+                        href={`/location/${connection.target_location}`}
+                        className="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-full text-sm transition"
+                      >
+                        {connection.target_location} ({connection.distance_meters}m)
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           
