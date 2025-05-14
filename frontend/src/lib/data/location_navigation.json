@@ -9,12 +9,12 @@
         {
           "target_location": "2ndFloorSE",
           "position_percent": 78.2,
-          "distance_meters":0
+          "distance_meters": 1
         },
         {
           "target_location": "2ndFloorSEstair",
           "position_percent": 70.6,
-          "distance_meters": 0
+          "distance_meters": 1
         }
       ]
     },
@@ -28,12 +28,12 @@
           {
             "target_location": "2ndFloorSE",
             "position_percent": 71.1,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorNW",
             "position_percent": 22.9,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -47,17 +47,17 @@
           {
             "target_location": "221",
             "position_percent": 32.3,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorSEstair",
             "position_percent": 26.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorEntrance",
             "position_percent": 24.3,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -71,17 +71,17 @@
           {
             "target_location": "217",
             "position_percent": 84.8,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorNW",
             "position_percent": 63.4,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorN",
             "position_percent": 63.4,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -95,12 +95,12 @@
           {
             "target_location": "2ndFloorN",
             "position_percent": 97.5,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "221",
             "position_percent": 64.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -114,17 +114,17 @@
           {
             "target_location": "2ndFloorSW",
             "position_percent": 46.8,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorSEstair",
             "position_percent": 96.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorSE",
             "position_percent": 98.1,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -138,22 +138,22 @@
           {
             "target_location": "2ndFloorE",
             "position_percent": 59.5,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorNW",
             "position_percent": 98.1,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "217",
             "position_percent": 95.0,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorNWstair",
             "position_percent": 95.0,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -167,12 +167,12 @@
           {
             "target_location": "2ndFloorN",
             "position_percent": 48.5,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "Building3to2",
             "position_percent": 73.6,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -186,17 +186,17 @@
           {
             "target_location": "2ndFloorSEstair",
             "position_percent": 63.6,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "221",
             "position_percent": 97.9,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "224",
             "position_percent": 31.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -210,12 +210,12 @@
           {
             "target_location": "2ndFloorEntrance",
             "position_percent": 66.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "2ndFloorSE",
             "position_percent": 28.8,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -229,12 +229,12 @@
           {
             "target_location": "2ndFloorEntrance",
             "position_percent": 98.1,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "Building3to2",
             "position_percent": 72.5,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -248,12 +248,12 @@
           {
             "target_location": "317N",
             "position_percent": 75.5,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "317W",
             "position_percent": 50.8,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -267,17 +267,17 @@
           {
             "target_location": "317W",
             "position_percent": 98.5,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "317",
             "position_percent": 73.8,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "3rdFloorRounge",
             "position_percent": 49.3,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -291,12 +291,12 @@
           {
             "target_location": "317N",
             "position_percent": 47.6,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "317",
             "position_percent": 73.1,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -310,12 +310,12 @@
           {
             "target_location": "3rdFloorRounge",
             "position_percent": 21.0,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "321",
             "position_percent": 72.3,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -329,12 +329,12 @@
           {
             "target_location": "320",
             "position_percent": 22.7,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "322",
             "position_percent": 84.4,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -348,17 +348,17 @@
           {
             "target_location": "321",
             "position_percent": 21.9,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "331",
             "position_percent": 70.6,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "3rdFloorRounge2",
             "position_percent": 70.6,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -372,12 +372,12 @@
           {
             "target_location": "332",
             "position_percent": 28.3,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "340",
             "position_percent": 77.7,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -391,17 +391,17 @@
           {
             "target_location": "317W",
             "position_percent": 73.0,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "331",
             "position_percent": 24.1,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "3rdFloorRounge2",
             "position_percent": 24.1,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -415,12 +415,12 @@
           {
             "target_location": "317N",
             "position_percent": 19.4,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "320",
             "position_percent": 70.5,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -434,12 +434,12 @@
           {
             "target_location": "422",
             "position_percent": 72.9,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "441",
             "position_percent": 24.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -453,17 +453,17 @@
           {
             "target_location": "422",
             "position_percent": 63.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "424",
             "position_percent": 25.1,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "415",
             "position_percent": 25.1,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -477,32 +477,32 @@
           {
             "target_location": "413",
             "position_percent": 71.3,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "423",
             "position_percent": 71.3,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "438",
             "position_percent": 20.9,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "432",
             "position_percent": 20.9,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "439",
             "position_percent": 20.9,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "4thFloorRounge2",
             "position_percent": 20.9,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -516,22 +516,22 @@
           {
             "target_location": "411",
             "position_percent": 24.8,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "4thFloorRounge",
             "position_percent": 24.8,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "413",
             "position_percent": 73.8,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "423",
             "position_percent": 73.8,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -545,17 +545,17 @@
           {
             "target_location": "422",
             "position_percent": 22.8,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "415",
             "position_percent": 85.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "424",
             "position_percent": 85.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -569,32 +569,32 @@
             {
                 "target_location": "413",
                 "position_percent": 24.5,
-                "distance_meters": 0
+                "distance_meters": 1
               },
               {
                 "target_location": "423",
                 "position_percent": 24.5,
-                "distance_meters": 0
+                "distance_meters": 1
               },
               {
                 "target_location": "438",
                 "position_percent": 75.2,
-                "distance_meters": 0
+                "distance_meters": 1
               },
               {
                 "target_location": "432",
                 "position_percent": 75.2,
-                "distance_meters": 0
+                "distance_meters": 1
               },
               {
                 "target_location": "439",
                 "position_percent": 75.2,
-                "distance_meters": 0
+                "distance_meters": 1
               },
               {
                 "target_location": "4thFloorRounge2",
                 "position_percent": 75.2,
-                "distance_meters": 0
+                "distance_meters": 1
               }
         ]
       },
@@ -608,17 +608,17 @@
           {
             "target_location": "439",
             "position_percent": 78.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "415",
             "position_percent": 29.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "424",
             "position_percent": 29.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -632,17 +632,17 @@
           {
             "target_location": "439",
             "position_percent": 73.3,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "415",
             "position_percent": 24.4,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "424",
             "position_percent": 24.4,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -656,17 +656,17 @@
           {
             "target_location": "439",
             "position_percent": 72.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "415",
             "position_percent": 24.1,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "424",
             "position_percent": 24.1,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -680,32 +680,32 @@
           {
             "target_location": "411",
             "position_percent": 70.4,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "4thFloorRounge",
             "position_percent": 70.4,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "438",
             "position_percent": 20.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "432",
             "position_percent": 20.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "439",
             "position_percent": 20.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "4thFloorRounge2",
             "position_percent": 20.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -719,12 +719,12 @@
           {
             "target_location": "422",
             "position_percent": 72.9,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "440",
             "position_percent": 24.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       },
@@ -738,17 +738,17 @@
           {
             "target_location": "439",
             "position_percent": 78.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "415",
             "position_percent": 29.2,
-            "distance_meters": 0
+            "distance_meters": 1
           },
           {
             "target_location": "424",
             "position_percent": 29.2,
-            "distance_meters": 0
+            "distance_meters": 1
           }
         ]
       }
