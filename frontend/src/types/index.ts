@@ -28,3 +28,21 @@ export interface SearchParams {
 export interface LocationData extends Classroom {
   location: string;
 }
+
+// ロケーションナビゲーション接続の型
+export interface LocationConnection {
+  target_location: string;
+  position_percent: number;
+  distance_meters: number;
+  direction_name?: string;
+}
+
+// ロケーションナビゲーションデータの型
+export interface LocationNavigationData {
+  id: string;
+  location: string;
+  room_name: string;
+  floor_number: number;
+  panorama_image: string;
+  connections: LocationConnection[];
+}
