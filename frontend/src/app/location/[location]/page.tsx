@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 // import { Classroom, LocationData } from '../../../types';
 import { LocationData } from '../../../types';
 
@@ -12,6 +13,7 @@ export default function LocationDetailPage() {
   const [classroom, setClassroom] = useState<LocationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -94,6 +96,34 @@ export default function LocationDetailPage() {
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white pb-3 border-b border-gray-200 dark:border-gray-700">
             {classroom.room_name || 'ロケーション詳細'}
           </h1>
+          
+          {/* パノラマ画像表示エリア */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold mb-4 text-gray-700 dark:text-gray-300">パノラマビュー</h2>
+            <div className="w-full relative">
+              <div className="overflow-x-auto pb-4 w-full" style={{ maxWidth: '100%', overflowY: 'hidden' }}>
+                {!imageError ? (
+                  <div className="w-max">
+                    <img 
+                      src={`/location/${location}.jpeg.jpg`}
+                      alt={`${classroom.room_name || 'ロケーション'}のパノラマ画像`}
+                      style={{ height: '500px', width: 'auto' }}
+                      onError={() => setImageError(true)}
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-gray-100 dark:bg-gray-700 p-8 rounded text-center w-full" style={{ height: '500px' }}>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      このロケーションのパノラマ画像は利用できません。
+                    </p>
+                  </div>
+                )}
+              </div>
+              <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center">
+                ← 左右にスクロールしてパノラマ画像を見る →
+              </div>
+            </div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
