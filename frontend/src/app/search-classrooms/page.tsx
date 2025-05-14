@@ -9,7 +9,7 @@ import ClassroomList from '../../components/ClassroomList';
 export default function SearchClassrooms() {
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchParams, setSearchParams] = useState<SearchParams>({});
+  // const [searchParams, setSearchParams] = useState<SearchParams>({});
 
   // 初期データ読み込み
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function SearchClassrooms() {
 
   // 検索処理
   const handleSearch = (params: SearchParams) => {
-    setSearchParams(params);
+    // setSearchParams(params);
     fetchClassrooms(params);
   };
 
