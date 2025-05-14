@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { Classroom, LocationData } from '../../../types';
+// import { Classroom, LocationData } from '../../../types';
+import { LocationData } from '../../../types';
 
 export default function LocationDetailPage() {
   const params = useParams();

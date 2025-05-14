@@ -1,5 +1,0 @@
-[
-    { "id": "sch1", "class": "数学I", "day": "Mon", "time": "9:00-10:30", "roomId": "room1" },
-    { "id": "sch2", "class": "英語II", "day": "Tue", "time": "10:40-12:10", "roomId": "room2" },
-    { "id": "sch3", "class": "物理",   "day": "Wed", "time": "13:00-14:30", "roomId": "room1" }
-  ]
