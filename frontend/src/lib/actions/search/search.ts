@@ -1,6 +1,7 @@
 'use server';
 
-import { Classroom, LocationData } from '../../../types';
+// import { Classroom, LocationData } from '../../../types';
+import { LocationData } from '../../../types';
 import locationsData from '../../../lib/data/location.json';
 
 // 検索結果の型定義

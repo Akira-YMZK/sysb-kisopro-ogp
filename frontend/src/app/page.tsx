@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Classroom, LocationData } from '../types';
+// import { Classroom, LocationData } from '../types';
+import { LocationData } from '../types';
 import { findRoute, RouteSearchResult } from '../lib/actions/search/search';
 
 export default function Home() {
