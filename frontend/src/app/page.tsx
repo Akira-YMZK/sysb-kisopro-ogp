@@ -124,6 +124,11 @@ export default function Home() {
   // 経路検索処理
   // =========================================
   const handleRouteSearch = () => {
+    // 前回の案内データをクリア
+    sessionStorage.removeItem('navigationRoute');
+    sessionStorage.removeItem('navigationStepIndex');
+    sessionStorage.removeItem('navigationDestination');
+    sessionStorage.removeItem('navigationDestinationName');
     // セッションに案内情報を保存
     sessionStorage.setItem('navigationDestination', selectedDestLocation);
     sessionStorage.setItem('navigationDestinationName', selectedDestRoomName);
