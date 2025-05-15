@@ -123,42 +123,13 @@ export default function Home() {
   // =========================================
   // 経路検索処理
   // =========================================
-  const handleRouteSearch = async () => {
-    // 出発地点の取得
-    const startPoint = useCustomStartPoint ? customStartPoint : selectedStartRoomName;
-    
-    // 入力検証
-    if ((!startPoint || startPoint.trim() === '') || !selectedDestLocation) {
-      // 入力が不完全な場合は処理を中断
-      return;
-    }
-
-    try {
-      // 検索開始を示す状態をセット
-      setSearching(true);
-      
-      // Server Actionを呼び出して経路検索を実行
-      const result = await findRoute(startPoint, selectedDestRoomName);
-      
-      // 検索結果を状態に保存
-      setSearchResult(result);
-      
-      // 検索が成功した場合、ロケーション詳細ページへ遷移
-      if (result.success) {
-        router.push(`/location/${encodeURIComponent(selectedDestLocation)}`);
-      }
-      
-    } catch (error) {
-      // エラーハンドリング
-      console.error('経路検索処理エラー:', error);
-      setSearchResult({
-        success: false,
-        error: '経路検索処理中にエラーが発生しました'
-      });
-    } finally {
-      // 検索状態を解除
-      setSearching(false);
-    }
+  const handleRouteSearch = () => {
+    // セッションに案内情報を保存
+    sessionStorage.setItem('navigationDestination', selectedDestLocation);
+    sessionStorage.setItem('navigationDestinationName', selectedDestRoomName);
+    sessionStorage.setItem('navigationStepIndex', '0');
+    // 出発地点のロケーション詳細ページへ遷移
+    router.push(`/location/${encodeURIComponent(selectedStartLocation)}`);
   };
 
   // ロケーション表示用の関数（room_nameがnullの場合の表示を処理）
