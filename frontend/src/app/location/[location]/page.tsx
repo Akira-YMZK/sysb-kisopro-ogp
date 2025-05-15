@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
-import { LocationData, LocationNavigationData, LocationConnection } from '../../../types';
+import { LocationData, LocationNavigationData } from '../../../types';
 import { findPath } from '../../../lib/actions/findpath';
 import styles from './page.module.css';
 
@@ -124,7 +123,7 @@ export default function LocationDetailPage() {
     };
 
     fetchData();
-  }, [location]);
+  }, [location, router]);
   
   // 経路を検索
   const handleRouteSearch = async () => {
@@ -200,24 +199,6 @@ export default function LocationDetailPage() {
     sessionStorage.removeItem('navigationDestinationName');
   };
   
-  // 次のポイントへのconnectionを取得
-  const getNextLocationConnection = (): string | null => {
-    if (!isNavigating || currentStepIndex >= route.length - 1 || !navigationData) {
-      return null;
-    }
-    
-    const nextLocation = route[currentStepIndex + 1];
-    
-    // 現在地から次の地点へのconnectionを検索
-    for (const connection of navigationData.connections) {
-      if (connection.target_location === nextLocation) {
-        return connection.target_location;
-      }
-    }
-    
-    return null;
-  };
-
   // ナビゲーションリンクをクリックした時の処理
   const handleNavigationClick = (targetLocation: string) => {
     router.push(`/location/${targetLocation}`);
