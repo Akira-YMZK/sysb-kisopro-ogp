@@ -4,9 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-// import { Classroom, LocationData } from '../types';
 import { LocationData } from '../types';
-import { findRoute, RouteSearchResult } from '../lib/actions/search/search';
 
 export default function Home() {
   // =========================================
@@ -19,8 +17,6 @@ export default function Home() {
   const [allLocations, setAllLocations] = useState<LocationData[]>([]);
   // 選択された出発地点のロケーション
   const [selectedStartLocation, setSelectedStartLocation] = useState('');
-  // 出発地点の表示用名称
-  const [selectedStartRoomName, setSelectedStartRoomName] = useState('');
   // 選択された目的地のロケーション
   const [selectedDestLocation, setSelectedDestLocation] = useState('');
   // 目的地の表示用名称
@@ -35,10 +31,6 @@ export default function Home() {
   const [useCustomStartPoint, setUseCustomStartPoint] = useState(false);
   // データ読み込み中状態
   const [loading, setLoading] = useState(true);
-  // 経路検索結果の状態
-  const [searchResult, setSearchResult] = useState<RouteSearchResult | null>(null);
-  // 検索処理中状態
-  const [searching, setSearching] = useState(false);
   
   // 入力フィールドの参照
   const inputRef = useRef<HTMLInputElement>(null);
@@ -79,8 +71,6 @@ export default function Home() {
         // 出発地点の初期値（全データから）
         if (data.length > 0) {
           setSelectedStartLocation(data[0].location);
-          // 表示用の名前（room_nameがnullの場合は「階数+ロケーション」を表示）
-          setSelectedStartRoomName(data[0].room_name || `${data[0].floor_number}階 ${data[0].location}`);
         }
       } catch (error) {
         console.error('Error fetching locations:', error);
@@ -111,15 +101,6 @@ export default function Home() {
   const handleStartLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const location = e.target.value;
     setSelectedStartLocation(location);
-    
-    // 選択されたロケーションに対応する教室名も更新
-    const selectedLoc = allLocations.find(loc => loc.location === location);
-    if (selectedLoc) {
-      // room_nameがnullの場合は「階数+ロケーション」を表示
-      setSelectedStartRoomName(
-        selectedLoc.room_name || `${selectedLoc.floor_number}階 ${selectedLoc.location}`
-      );
-    }
   };
 
   // 目的地ロケーション選択時の処理
@@ -192,7 +173,6 @@ export default function Home() {
     
     if (selectedLoc) {
       setSelectedStartLocation(selectedLoc.location);
-      setSelectedStartRoomName(suggestion);
     }
     
     setShowSuggestions(false);
@@ -368,20 +348,12 @@ export default function Home() {
           disabled={
             (useCustomStartPoint ? !customStartPoint.trim() : !selectedStartLocation) || 
             !selectedDestLocation || 
-            loading || 
-            searching
+            loading
           }
           className="w-full mt-8 px-6 py-4 text-lg bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all shadow-lg hover:shadow-xl disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {searching ? '検索中...' : '経路検索'}
+          経路検索
         </button>
-        
-        {/* エラーメッセージ表示 */}
-        {searchResult && !searchResult.success && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600">
-            {searchResult.error || 'エラーが発生しました'}
-          </div>
-        )}
       </div>
       
       {/* 教室検索ページへのリンク */}
