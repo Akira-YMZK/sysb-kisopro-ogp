@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -27,6 +27,10 @@ export default function Home() {
   const [selectedDestRoomName, setSelectedDestRoomName] = useState('');
   // 自由入力の出発地点（オプション）
   const [customStartPoint, setCustomStartPoint] = useState('');
+  // 自由入力の候補リスト
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  // 候補表示フラグ
+  const [showSuggestions, setShowSuggestions] = useState(false);
   // カスタム入力を使用するかのフラグ
   const [useCustomStartPoint, setUseCustomStartPoint] = useState(false);
   // データ読み込み中状態
@@ -35,6 +39,11 @@ export default function Home() {
   const [searchResult, setSearchResult] = useState<RouteSearchResult | null>(null);
   // 検索処理中状態
   const [searching, setSearching] = useState(false);
+  
+  // 入力フィールドの参照
+  const inputRef = useRef<HTMLInputElement>(null);
+  // サジェスト候補コンテナへの参照
+  const suggestionsRef = useRef<HTMLDivElement>(null);
   
   const router = useRouter();
 
@@ -83,6 +92,21 @@ export default function Home() {
     fetchLocations();
   }, []);
 
+  // クリック外のイベント監視
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node) && 
+          inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   // 出発地点ロケーション選択時の処理
   const handleStartLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const location = e.target.value;
@@ -117,7 +141,61 @@ export default function Home() {
     // カスタム入力に切り替えた場合は入力内容をクリア
     if (!useCustomStartPoint) {
       setCustomStartPoint('');
+      setSuggestions([]);
+      setShowSuggestions(false);
     }
+  };
+  
+  // 自由入力文字列変更時の処理（オートコンプリート）
+  const handleCustomInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setCustomStartPoint(inputValue);
+    
+    if (inputValue.trim().length > 0) {
+      // 入力値を含む候補を生成
+      const inputLower = inputValue.toLowerCase();
+      
+      // 教室名、または「階数+ロケーション」でマッチングを行う
+      const matchedSuggestions = allLocations
+        .map(loc => {
+          const displayName = loc.room_name || `${loc.floor_number}階 ${loc.location}`;
+          return {
+            displayName,
+            location: loc.location,
+            score: displayName.toLowerCase().indexOf(inputLower)
+          };
+        })
+        .filter(item => item.score >= 0)  // 一致したもののみ
+        .sort((a, b) => a.score - b.score)  // 前方一致を優先
+        .map(item => item.displayName);
+      
+      // 重複を除去
+      const uniqueSuggestions = Array.from(new Set(matchedSuggestions)).slice(0, 5);
+      
+      setSuggestions(uniqueSuggestions);
+      setShowSuggestions(uniqueSuggestions.length > 0);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+  
+  // 候補クリック時の処理
+  const handleSuggestionClick = (suggestion: string) => {
+    setCustomStartPoint(suggestion);
+    
+    // 選択した候補に対応するロケーションを探す
+    const selectedLoc = allLocations.find(loc => {
+      const displayName = loc.room_name || `${loc.floor_number}階 ${loc.location}`;
+      return displayName === suggestion;
+    });
+    
+    if (selectedLoc) {
+      setSelectedStartLocation(selectedLoc.location);
+      setSelectedStartRoomName(suggestion);
+    }
+    
+    setShowSuggestions(false);
   };
 
   // =========================================
@@ -129,6 +207,19 @@ export default function Home() {
     sessionStorage.removeItem('navigationStepIndex');
     sessionStorage.removeItem('navigationDestination');
     sessionStorage.removeItem('navigationDestinationName');
+    
+    // 自由入力モードの場合、選択されたロケーションを検索
+    if (useCustomStartPoint) {
+      const matchedLoc = allLocations.find(loc => {
+        const displayName = loc.room_name || `${loc.floor_number}階 ${loc.location}`;
+        return displayName === customStartPoint;
+      });
+      
+      if (matchedLoc) {
+        setSelectedStartLocation(matchedLoc.location);
+      }
+    }
+    
     // セッションに案内情報を保存
     sessionStorage.setItem('navigationDestination', selectedDestLocation);
     sessionStorage.setItem('navigationDestinationName', selectedDestRoomName);
@@ -188,21 +279,43 @@ export default function Home() {
         </div>
         
         {/* 出発地点入力（切り替え可能） */}
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2 relative">
           <label htmlFor="startPoint" className="text-gray-700 dark:text-gray-300 font-medium">
             現在地
           </label>
           
           {/* 自由入力モード */}
           {useCustomStartPoint ? (
-            <input
-              id="customStartPoint"
-              type="text"
-              value={customStartPoint}
-              onChange={(e) => setCustomStartPoint(e.target.value)}
-              placeholder="現在地を入力 例:31講義室、217室"
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-            />
+            <div className="relative">
+              <input
+                ref={inputRef}
+                id="customStartPoint"
+                type="text"
+                value={customStartPoint}
+                onChange={handleCustomInputChange}
+                onFocus={() => customStartPoint.trim() && suggestions.length > 0 ? setShowSuggestions(true) : null}
+                placeholder="現在地を入力 例:31講義室、217室"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+              />
+              
+              {/* オートコンプリート候補表示エリア */}
+              {showSuggestions && (
+                <div 
+                  ref={suggestionsRef}
+                  className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto"
+                >
+                  {suggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ) : (
             /* 教室選択モード */
             <select
