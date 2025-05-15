@@ -425,25 +425,6 @@
           }
         ]
       },
-      {
-        "id": "lc20",
-        "location": "3rdFloorRounge",
-        "room_name": "ラウンジ",
-        "floor_number": 3,
-        "panorama_image": "3rdFloorRounge.jpeg",
-        "connections": [
-          {
-            "target_location": "317N",
-            "position_percent": 19.4,
-            "distance_meters": 1
-          },
-          {
-            "target_location": "320",
-            "position_percent": 70.5,
-            "distance_meters": 1
-          }
-        ]
-      },
        {
         "id": "lc20",
         "location": "3rdFloorRounge",
