@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { LocationData, LocationNavigationData } from '../../../types';
 import { findPath } from '../../../lib/actions/findpath';
 import styles from './page.module.css';
@@ -279,20 +280,17 @@ export default function LocationDetailPage() {
               <div className="overflow-x-auto pb-4 w-full" style={{ maxWidth: '100%', overflowY: 'hidden' }}>
                 {!imageError ? (
                   <div className="w-max relative">
-                    <img 
+                    <Image 
                       src={`/location/${location}.jpeg.jpg`}
                       alt={`${classroom.room_name || 'ロケーション'}のパノラマ画像`}
                       style={{ height: '500px', width: 'auto' }}
+                      width={1920}
+                      height={500}
                       onError={() => setImageError(true)}
                     />
                     
                     {/* ナビゲーションリンク */}
                     {navigationData && navigationData.connections.map((connection, index) => {
-                      // 接続地点±5%の範囲をクリック可能にする
-                      const minPercent = Math.max(0, connection.position_percent - 5);
-                      const maxPercent = Math.min(100, connection.position_percent + 5);
-                      const width = maxPercent - minPercent;
-                      
                       // 経路案内中で、この接続先が次の目的地かどうか
                       const isNextInRoute = isNavigating && 
                         currentStepIndex < route.length - 1 && 
