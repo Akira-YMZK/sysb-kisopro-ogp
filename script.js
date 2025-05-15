@@ -11,9 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let classroomData = [];
   
     // 全角⇄半角統一＆小文字化
-    const normalize = s => s.normalize('NFKC').toLowerCase();
+    const normalize = s => s.normalize("NFKC").toLowerCase();
   
-    // JSON を読み込んで初期化
+    // 外部 JSON を読み込む
     fetch("data/classrooms.json")
       .then(res => res.json())
       .then(data => {
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => console.error("教室データ読み込み失敗:", err));
   
-    // フィルター（建物／階）を生成
+    // 建物／階フィルターを埋める
     function populateFilters() {
       const buildings = [...new Set(classroomData.map(c => c.building_name))];
       buildings.forEach(b => {
@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   
       const floors = [...new Set(classroomData.map(c => String(c.floor_number)))]
-                       .sort((a,b) => a - b);
+                       .filter(f => f !== "null")  // floor_number=null は無視
+                       .sort((a, b) => a - b);
       floors.forEach(f => {
         const opt = document.createElement("option");
         opt.value = f;
@@ -43,20 +44,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   
-    // フィルタ＆描画
+    // 絞り込み＆描画
     function filterAndDisplay() {
       const kw   = normalize(searchInput.value.trim());
       const bSel = buildingFilter.value;
       const fSel = floorFilter.value;
   
       const filtered = classroomData.filter(c => {
-        const roomNum = normalize(String(c.room_number));
-        const matchKw = roomNum.includes(kw);
+        // 検索対象フィールドを配列化
+        const candidates = [
+          c.room_name,                    // 部屋名称
+          String(c.room_number),          // 部屋番号
+          c.building_name                 // 建物名
+        ].map(normalize);
+  
+        // いずれかにキーワードが含まれるか
+        const matchKw = candidates.some(text => text.includes(kw));
         const matchB  = !bSel || c.building_name === bSel;
         const matchF  = !fSel || String(c.floor_number) === fSel;
+  
         return matchKw && matchB && matchF;
       });
   
+      // 結果クリア
       searchResults.innerHTML = "";
       if (filtered.length === 0) {
         noResults.style.display = "block";
@@ -64,10 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
         noResults.style.display = "none";
         filtered.forEach(c => {
           const clone = template.content.cloneNode(true);
-          clone.querySelector(".room-name").textContent     = `教室 ${c.room_number}`;
+          // room_name をメイン見出しに
+          clone.querySelector(".room-name").textContent     = c.room_name;
           clone.querySelector(".building-name").textContent = c.building_name;
-          clone.querySelector(".floor-number").textContent  = c.floor_number;
-          clone.querySelector(".room-number").textContent   = c.room_number;
+          clone.querySelector(".floor-number").textContent  = c.floor_number ?? "";
+          clone.querySelector(".room-number").textContent   = c.room_number ?? "";
           searchResults.appendChild(clone);
         });
       }
@@ -80,9 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
     floorFilter.addEventListener("change", filterAndDisplay);
   
     clearButton.addEventListener("click", () => {
-      searchInput.value       = "";
-      buildingFilter.value    = "";
-      floorFilter.value       = "";
+      searchInput.value    = "";
+      buildingFilter.value = "";
+      floorFilter.value    = "";
       filterAndDisplay();
     });
   });
