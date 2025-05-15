@@ -434,7 +434,7 @@ export default function LocationDetailPage() {
                           .filter(nav => nav.location !== location)
                           .sort((a, b) => a.location.localeCompare(b.location))
                           .map(nav => (
-                            <option key={nav.id} value={nav.location}>
+                            <option key={`${nav.id}-${nav.location}`} value={nav.location}>
                               {nav.location} - {nav.room_name !== "null" ? nav.room_name : "ロケーション"}
                             </option>
                           ))
