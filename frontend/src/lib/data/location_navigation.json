@@ -64,7 +64,7 @@
       {
         "id": "lc4",
         "location": "2ndFloorNWstair",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorNWstair.jpeg",
         "connections": [
@@ -93,7 +93,7 @@
       {
         "id": "lc5",
         "location": "2ndFloorE",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorE.jpeg",
         "connections": [
@@ -112,7 +112,7 @@
       {
         "id": "lc6",
         "location": "2ndFloorEntrance",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorEntrance.jpeg",
         "connections": [
@@ -136,7 +136,7 @@
       {
         "id": "lc7",
         "location": "2ndFloorN",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorN.jpeg",
         "connections": [
@@ -165,7 +165,7 @@
       {
         "id": "lc8",
         "location": "2ndFloorNW",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorNW.jpeg",
         "connections": [
@@ -184,7 +184,7 @@
       {
         "id": "lc9",
         "location": "2ndFloorSE",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorSE.jpeg",
         "connections": [
@@ -208,7 +208,7 @@
       {
         "id": "lc10",
         "location": "2ndFloorSEstair",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorSEstair.jpeg",
         "connections": [
@@ -232,7 +232,7 @@
       {
         "id": "lc11",
         "location": "2ndFloorSW",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 2,
         "panorama_image": "2ndFloorSW.jpeg",
         "connections": [
@@ -280,7 +280,7 @@
       {
         "id": "lc13",
         "location": "317N",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 3,
         "panorama_image": "317N.jpeg",
         "connections": [
@@ -304,7 +304,7 @@
       {
         "id": "lc14",
         "location": "317W",
-        "room_name": "null",
+        "room_name": null,
         "floor_number": 3,
         "panorama_image": "317W.jpeg",
         "connections": [

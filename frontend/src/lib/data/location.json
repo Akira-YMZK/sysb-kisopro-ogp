@@ -12,7 +12,7 @@
     { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "連絡通路", "location":"Building3to2" },
     { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "交差点", "location":"217W" },
     { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "階段", "location":"2ndFloorSEstair" },
-    { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "階段", "location":"2ndFlioorNWstair" },
+    { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "階段", "location":"2ndFloorNWstair" },
     { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "ローソン", "location":"lawson" },
     { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "トイレ", "location":"2F-N-toilet" },
     { "building_name": "工学部3号館", "floor_number": 2, "room_number": null, "room_name": "トイレ", "location":"2F-W-toilet" },
